@@ -21,7 +21,7 @@ CLASS zcl_gf_hello_world2 IMPLEMENTATION.
         lo_object2 TYPE REF TO zcl_gf_hello_world,
         lo_object3 TYPE REF TO zcl_gf_hello_world,
         lo_object4 TYPE REF TO zcl_gf_hello_world.
-    CREATE OBJECT lo_object.
+    lo_object = NEW #(  ).
     lo_object->gm_test(  ).
 *    lo_object->gv_flag = 'X'.
     CREATE OBJECT lo_object2.
