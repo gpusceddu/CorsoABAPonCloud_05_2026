@@ -62,7 +62,7 @@ CLASS zcl_gf_riempi_tipo_utente IMPLEMENTATION.
         EXPORTING
           data   = 'Inserimento avvenuto con successo'
 *            name   =
-*          RECEIVING
+*        RECEIVING
 *            output =
       ).
     ELSE.
