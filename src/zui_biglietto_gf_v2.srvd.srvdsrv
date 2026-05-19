@@ -1,0 +1,4 @@
+@EndUserText.label: 'Biglietto'
+define service ZUI_BIGLIETTO_GF_V2 {
+  expose ZC_BIGLIETTO_GF;
+}

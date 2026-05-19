@@ -1,0 +1,134 @@
+@Metadata.layer: #CORE
+@UI.headerInfo: {
+    typeName: 'Biglietto',
+    typeNamePlural: 'Biglietti',
+    title: {
+        value: 'IdBiglietto'
+    },
+    description: {
+        value: 'CreatoDa'
+    }
+}
+annotate view ZC_BIGLIETTO_GF
+    with 
+{
+//    @UI.facet: [{
+//        id: 'ViewPrincipale',
+//        purpose: #STANDARD,
+//        position: 10,
+//        label: 'Id',
+//        type: #IDENTIFICATION_REFERENCE
+//    }]
+    @UI.facet: [{
+        id: 'Id',
+        purpose: #STANDARD,
+        position: 10,
+        label: 'Id',
+        type: #FIELDGROUP_REFERENCE,
+        targetQualifier: 'Id'
+    },{
+        id: 'DatiModifica',
+        purpose: #STANDARD,
+        position: 20,
+        label: 'Dati di modifica',
+        type: #FIELDGROUP_REFERENCE,
+        targetQualifier: 'DatiModifica'
+    }]
+
+    @UI: {
+        lineItem: [{
+            position: 10
+        }],
+        identification: [{
+            position: 10
+        }],
+        fieldGroup: [{  
+            position: 10,
+            qualifier: 'Id'
+        }],
+        selectionField: [{
+            position: 10
+        }]
+    }
+    IdBiglietto;
+    
+    @EndUserText.label: 'Creato da'
+    @UI: {
+        lineItem: [{
+            position: 20
+        }],
+        identification: [{
+            position: 20
+        }],
+        fieldGroup: [{  
+            position: 10,
+            qualifier: 'DatiModifica'
+        }],
+        selectionField: [{
+            position: 20,
+            exclude: true
+        }]
+    }
+    CreatoDa;
+    
+    @EndUserText.label: 'Creato a'
+    @UI: {
+        lineItem: [{
+            position: 30,
+            exclude: true
+        }],
+        identification: [{
+            position: 30
+        }],
+        fieldGroup: [{  
+            position: 20,
+            qualifier: 'DatiModifica'
+        }],
+        selectionField: [{
+            position: 30,
+            exclude: true
+        }]
+    }
+    CreatoA;
+    
+    @EndUserText.label: 'Modificato da'
+    @UI: {
+        lineItem: [{
+            position: 40
+        }],
+        identification: [{
+            position: 40
+        }],
+        fieldGroup: [{  
+            position: 30,
+            qualifier: 'DatiModifica'
+        }],
+        selectionField: [{
+            position: 40,
+            exclude: true
+        }]
+    }
+    ModificatoDa;
+    
+    @EndUserText.label: 'Modificato a'
+    @UI: {
+        lineItem: [{
+            position: 50
+        }],
+        identification: [{
+            position: 50
+        }],
+        fieldGroup: [{  
+            position: 40,
+            qualifier: 'DatiModifica'
+        }],
+        selectionField: [{
+            position: 50,
+            exclude: true
+        }]
+    }
+    ModificatoA;
+    
+    @UI.hidden: true
+    Modificato;
+}
