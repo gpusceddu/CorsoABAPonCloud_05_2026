@@ -13,6 +13,7 @@ define root view entity ZC_BIGLIETTO_GF2
   association [1..1] to ZI_BIGLIETTO_GF2 as _BaseEntity on $projection.IdBiglietto = _BaseEntity.IdBiglietto
 {
   key IdBiglietto,
+  Stato,
   @Semantics: {
     user.createdBy: true
   }

@@ -2,7 +2,7 @@
 @UI.headerInfo.title.type: #STANDARD
 @UI.headerInfo.title.value: 'IdBiglietto'
 @UI.headerInfo.description.type: #STANDARD
-@UI.headerInfo.description.value: 'IdBiglietto'
+@UI.headerInfo.description.value: 'Stato'
 annotate view ZC_BIGLIETTO_GF2 with
 {
   @UI.facet: [ {
@@ -14,14 +14,38 @@ annotate view ZC_BIGLIETTO_GF2 with
   } ]
   @UI.identification: [ {
     position: 10 
+  },
+  {
+    position: 10,
+    type: #FOR_ACTION,
+    dataAction: 'CustomDelete',
+    label: 'Delete' 
   } ]
   @UI.lineItem: [ {
     position: 10 
+  },
+  {
+    position: 10,
+    type: #FOR_ACTION,
+    dataAction: 'CustomDelete',
+    label: 'Delete' 
   } ]
   @UI.selectionField: [ {
     position: 10 
   } ]
   IdBiglietto;
+  
+  @UI.identification: [ {
+    position: 15,
+    hidden: true
+  } ]
+  @UI.lineItem: [ {
+    position: 15 
+  } ]
+  @UI.selectionField: [ {
+    position: 15 
+  } ]
+  Stato;
   
   @UI.identification: [ {
     position: 20 

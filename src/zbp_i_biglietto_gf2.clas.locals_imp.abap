@@ -6,7 +6,15 @@ CLASS lhc_zi_biglietto_gf2 DEFINITION INHERITING FROM cl_abap_behavior_handler.
         REQUEST requested_authorizations FOR Biglietto
         RESULT result,
       earlynumbering_create FOR NUMBERING
-        IMPORTING entities FOR CREATE Biglietto.
+        IMPORTING entities FOR CREATE Biglietto,
+      ValidaStato FOR VALIDATE ON SAVE
+        IMPORTING keys FOR Biglietto~ValidaStato,
+      GetDefaultsForCreate FOR READ
+        IMPORTING keys FOR FUNCTION Biglietto~GetDefaultsForCreate RESULT result,
+      onSave FOR DETERMINE ON SAVE
+        IMPORTING keys FOR Biglietto~onSave,
+      CustomDelete FOR MODIFY
+            IMPORTING keys FOR ACTION Biglietto~CustomDelete RESULT result.
 ENDCLASS.
 
 CLASS lhc_zi_biglietto_gf2 IMPLEMENTATION.
@@ -65,6 +73,118 @@ CLASS lhc_zi_biglietto_gf2 IMPLEMENTATION.
           IdBiglietto = lv_id
       ) TO mapped-biglietto.
     ENDLOOP.
+  ENDMETHOD.
+
+  METHOD ValidaStato.
+    DATA: lt_biglietto TYPE TABLE FOR READ RESULT zi_biglietto_gf2.
+
+    READ ENTITIES OF zi_biglietto_gf2
+        IN LOCAL MODE
+        ENTITY Biglietto
+        FIELDS ( Stato )
+        WITH CORRESPONDING #( keys )
+        RESULT lt_biglietto.
+
+    LOOP AT lt_biglietto
+            INTO DATA(ls_biglietto)
+            WHERE Stato <> 'BOZZA'
+              AND Stato <> 'ACCETTATO'
+              AND Stato <> 'CANCELLATO'.
+*       Segnalo quale riga va in errore
+      APPEND VALUE #(
+           %tky = ls_biglietto-%tky
+           )
+          TO failed-biglietto.
+*       Elenco gli errori
+      APPEND VALUE #(
+          %tky = ls_biglietto-%tky
+          %msg = NEW zcx_error_bigl_gf(
+              textid = zcx_error_bigl_gf=>invalid_status
+              severity = if_abap_behv_message=>severity-error
+*                severity = if_abap_behv_message=>severity-warning
+              iv_id = ls_biglietto-IdBiglietto
+              iv_stato = ls_biglietto-Stato
+          )
+          )
+          TO reported-biglietto.
+    ENDLOOP.
+
+  ENDMETHOD.
+
+  METHOD GetDefaultsForCreate.
+    result = VALUE #(
+        FOR key IN keys (
+            %cid         = key-%cid
+            %param-stato = 'BOZZA'
+        )
+    ).
+  ENDMETHOD.
+
+  METHOD onSave.
+    DATA:
+      lt_biglietto TYPE TABLE FOR READ RESULT zi_biglietto_gf2,
+      lt_update    TYPE TABLE FOR UPDATE zi_biglietto_gf2.
+
+    READ ENTITIES OF zi_biglietto_gf2
+        IN LOCAL MODE
+        ENTITY Biglietto
+        FIELDS ( Stato )
+        WITH CORRESPONDING #( keys )
+        RESULT lt_biglietto.
+
+    LOOP AT lt_biglietto
+            INTO DATA(ls_biglietto).
+      APPEND VALUE #(
+              %tky = ls_biglietto-%tky
+              Stato = 'ACCETTATO'
+              %control-Stato = if_abap_behv=>mk-on
+           )
+          TO lt_update.
+    ENDLOOP.
+
+    IF lt_update IS NOT INITIAL.
+      MODIFY ENTITIES OF zi_biglietto_gf2
+        IN LOCAL MODE
+        ENTITY Biglietto
+        UPDATE FROM lt_update.
+    ENDIF.
+  ENDMETHOD.
+
+
+  METHOD CustomDelete.
+    DATA:
+      lt_biglietto TYPE TABLE FOR READ RESULT zi_biglietto_gf2,
+      lt_update    TYPE TABLE FOR UPDATE zi_biglietto_gf2.
+
+    READ ENTITIES OF zi_biglietto_gf2
+        IN LOCAL MODE
+        ENTITY Biglietto
+        ALL FIELDS
+        WITH CORRESPONDING #( keys )
+        RESULT lt_biglietto.
+
+    LOOP AT lt_biglietto
+            INTO DATA(ls_biglietto).
+      APPEND VALUE #(
+              %tky = ls_biglietto-%tky
+              Stato = 'CANCELLATO'
+              %control-Stato = if_abap_behv=>mk-on
+           )
+          TO lt_update.
+
+      ls_biglietto-Stato = 'CANCELLATO'.
+      APPEND VALUE #(
+        %tky = ls_biglietto-%tky
+        %param = CORRESPONDING #( ls_biglietto )
+      ) TO result.
+    ENDLOOP.
+
+    IF lt_update IS NOT INITIAL.
+      MODIFY ENTITIES OF zi_biglietto_gf2
+        IN LOCAL MODE
+        ENTITY Biglietto
+        UPDATE FROM lt_update.
+    ENDIF.
   ENDMETHOD.
 
 ENDCLASS.

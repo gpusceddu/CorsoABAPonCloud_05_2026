@@ -24,10 +24,13 @@ early numbering
   //  field ( readonly : update )
   //   IdBiglietto;
 
+  validation ValidaStato on save { field Stato; }
+  determination onSave on save { create; }
+  action CustomDelete result [1] $self;
 
-  create;
+  create { default function GetDefaultsForCreate; }
   update;
-  delete;
+//  delete;
 
   draft action Activate optimized;
   draft action Discard;
@@ -43,6 +46,7 @@ early numbering
       ModificatoDa     = MODIFICATO_DA;
       ModificatoA      = MODIFICATO_A;
       LocalModificatoA = local_modificato_a;
+      Stato            = stato;
     }
 
 }

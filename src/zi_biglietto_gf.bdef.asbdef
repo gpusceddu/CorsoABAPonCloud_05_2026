@@ -21,6 +21,7 @@ etag master ModificatoA
   ModificatoDa,
   ModificatoA;
 
+
   mapping for zbiglietto_gf
     {
       IdBiglietto  = id_biglietto;

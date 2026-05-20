@@ -6,6 +6,7 @@ define root view entity ZI_BIGLIETTO_GF2
   as select from zbiglietto_gf2 as Biglietto
 {
   key id_biglietto as IdBiglietto,
+  stato as Stato,
   @Semantics.user.createdBy: true
   creato_da as CreatoDa,
   @Semantics.systemDateTime.createdAt: true
