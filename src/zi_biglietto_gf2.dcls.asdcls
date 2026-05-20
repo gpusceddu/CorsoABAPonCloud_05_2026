@@ -1,0 +1,6 @@
+@EndUserText.label: 'ZI_BIGLIETTO_GF2'
+@MappingRole: true
+define role ZI_BIGLIETTO_GF2 {
+  grant select on ZI_BIGLIETTO_GF2
+  where TRUE;
+}

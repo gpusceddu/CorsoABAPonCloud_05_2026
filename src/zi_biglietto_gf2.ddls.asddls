@@ -1,0 +1,19 @@
+@AccessControl.authorizationCheck: #MANDATORY
+@Metadata.allowExtensions: true
+@ObjectModel.sapObjectNodeType.name: 'ZBIGLIETTO_GF2'
+@EndUserText.label: '###GENERATED Core Data Service Entity'
+define root view entity ZI_BIGLIETTO_GF2
+  as select from zbiglietto_gf2 as Biglietto
+{
+  key id_biglietto as IdBiglietto,
+  @Semantics.user.createdBy: true
+  creato_da as CreatoDa,
+  @Semantics.systemDateTime.createdAt: true
+  creato_a as CreatoA,
+  @Semantics.user.lastChangedBy: true
+  modificato_da as ModificatoDa,
+  @Semantics.systemDateTime.lastChangedAt: true
+  modificato_a as ModificatoA,
+  @Semantics.systemDateTime.localInstanceLastChangedAt: true
+  local_modificato_a as LocalModificatoA
+}
